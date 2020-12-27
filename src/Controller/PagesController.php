@@ -70,4 +70,12 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+
+    public function home(): void
+    {
+    }
+
+    public function result(): void
+    {
+    }
 }
