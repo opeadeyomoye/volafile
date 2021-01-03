@@ -116,6 +116,7 @@ class Application extends BaseApplication
      */
     public function services(ContainerInterface $container): void
     {
+        require_once CONFIG . DS . 'services.php';
     }
 
     /**

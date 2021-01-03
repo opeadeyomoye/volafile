@@ -46,7 +46,9 @@ $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder) {
 
-    $builder->connect('/', ['controller' => 'Pages', 'action' => 'home']);
+    $builder->connect('/', ['controller' => 'Packages', 'action' => 'upload']);
+    $builder->connect('/uploaded', ['controller' => 'Packages', 'action' => 'uploadResult']);
+    $builder->connect('/download/:id', ['controller' => 'Packages', 'action' => 'download'])->setPass(['id']);
 
     $builder->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'status']);
 });
