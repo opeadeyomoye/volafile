@@ -6,16 +6,26 @@ namespace App\Controller;
 use App\Domain\Core\Repository\PackageRepositoryInterface;
 use App\Form\UploadPackageForm;
 use App\Service\Packages;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Routing\Router;
+use Throwable;
 
 /**
  * Controller for all our packaging needs.
+ *
+ * @property Component\PackageAuthComponent $PackageAuth
  */
 class PackagesController extends AppController
 {
-    protected const LAST_PACKAGE_SESSION_KEY = 'Session.lastUploadedPackage';
+    protected const LAST_PACKAGE_SESSION_KEY = 'Packages.lastUploadedPackage';
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('PackageAuth');
+    }
 
     public function upload(Packages $packages): ?Response
     {
@@ -73,11 +83,6 @@ class PackagesController extends AppController
         string $id,
         PackageRepositoryInterface $repository
     ): ?Response {
-        if ($this->request->is('post')) {
-            return $this->response;
-        }
-
-        /** @todo clean package id before use */
         $package = $repository->get($id);
         $accessCode = urldecode($this->request->getQuery('ac'));
 
@@ -85,13 +90,28 @@ class PackagesController extends AppController
             throw new NotFoundException('Sorry, we could not find that package.');
         }
 
-        $packageIsSealed = $package->isSealed();
+        $files = [];
+        $requiresKey = $package->isSealed();
 
-        $this->set([
-            'package' => $package,
-            'requiresKey' => $packageIsSealed,
-            'files' => $packageIsSealed ? [] : $package->peek(),
-        ]);
+        if (!$requiresKey) {
+            $this->PackageAuth->allowDownloadsFor($package->id());
+            $files = $package->peek();
+        }
+
+        if ($this->request->is('post')) {
+            // this package needs to be unsealed with a password,
+            // and the visitor's attempting to unseal it
+            $key = $this->request->getData('key');
+
+            try {
+                $files = $package->peek($key);
+                $this->PackageAuth->allowDownloadsFor($package->id());
+            } catch (Throwable $e) {
+                $this->Flash->error(__('That password is incorrect.'));
+            }
+        }
+
+        $this->set(compact('package', 'requiresKey', 'files'));
 
         return null;
     }
@@ -101,17 +121,36 @@ class PackagesController extends AppController
      *
      * @param string $packageId
      * @param string $fileId
-     * @param PackageRepositoryInterface $repository
+     * @param Packages $packages
      *
      * @return Response|null
      */
-    public function downloadFile(
-        string $packageId,
-        string $fileId,
-        PackageRepositoryInterface $repository
-    ): ?Response {
+    public function downloadFile(string $packageId, string $fileId, Packages $packages): ?Response
+    {
+        if (!$this->PackageAuth->downloadsAreAllowedFor($packageId)) {
+            throw new BadRequestException('Invalid request.');
+        }
 
-        return null;
+        // 👀👀👀...
+        $file = $this->getTableLocator()->get('PackageItems')
+            ->find()
+            ->where(['id' => (int)$fileId])
+            ->first();
+
+        if (!$file || $file->package_id !== $packageId) {
+            throw new BadRequestException('Invalid request.');
+        }
+
+        $resource = $packages->retrieveFile($file->get('path'));
+        $localPath = stream_get_meta_data($resource)['uri'];
+
+        // deliver the file
+        return $this->response
+            ->withHeader('Content-Description', 'File Transfer')
+            ->withType(mime_content_type($localPath))
+            ->withFile(stream_get_meta_data($resource)['uri'], [
+                'name' => $file->get('name'),
+                'download' => true,
+            ]);
     }
-
 }

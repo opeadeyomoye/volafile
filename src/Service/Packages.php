@@ -62,4 +62,9 @@ class Packages
     {
         return $this->packageRepository->save($package);
     }
+
+    public function retrieveFile(string $path)
+    {
+        return $this->storage->retrieve($path);
+    }
 }

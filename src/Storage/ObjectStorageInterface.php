@@ -16,7 +16,7 @@ interface ObjectStorageInterface
      */
     public function store(string $file, string $name, array $options = []): StorageObject;
 
-    public function retrieve(string $identifier): Object;
+    public function retrieve(string $identifier);
 
     public function delete(string $identifier): bool;
 }

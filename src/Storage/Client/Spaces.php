@@ -7,6 +7,7 @@ use App\Storage\ObjectStorageInterface;
 use App\Storage\StorageObject;
 use Aws\S3\S3Client;
 use InvalidArgumentException;
+use GuzzleHttp\Psr7\Stream;
 
 /**
  * Object storage client implementation for DigitalOcean's Spaces.
@@ -56,9 +57,17 @@ class Spaces implements ObjectStorageInterface
         return $object;
     }
 
-    public function retrieve(string $identifier): Object
+    public function retrieve(string $identifier)
     {
-        return new StorageObject('');
+        $result = $this->s3Client->getObject([
+            'Bucket' => $this->spaceName,
+            'Key' => $identifier,
+        ]);
+
+        $temp = tmpfile();
+        fwrite($temp, (string)$result['Body']);
+
+        return $temp;
     }
 
     public function delete(string $identifier): bool

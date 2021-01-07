@@ -49,6 +49,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/', ['controller' => 'Packages', 'action' => 'upload']);
     $builder->connect('/uploaded', ['controller' => 'Packages', 'action' => 'uploadResult']);
     $builder->connect('/download/:id', ['controller' => 'Packages', 'action' => 'download'])->setPass(['id']);
+    $builder->connect('/file/:packageId/:fileId', ['controller' => 'Packages', 'action' => 'downloadFile'])->setPass(['packageId', 'fileId']);
 
     $builder->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'status']);
 });
