@@ -25,7 +25,7 @@ class UploadPackageForm extends Form
     /**
      * Maximum size of uploaded file(s) in Mebibytes.
      */
-    protected const FILE_MAX_SIZE = 5;
+    protected const FILE_MAX_SIZE = 10;
 
     /**
      * {@inheritDoc}
