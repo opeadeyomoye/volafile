@@ -24,10 +24,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
+        volafile - Simple, private file-sharing.
+        <?php // $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
 
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
@@ -38,22 +37,18 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 
-<body>
-    <nav class="top-nav">
-        <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
-        </div>
-        <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
-        </div>
-    </nav>
-    <main class="main">
-        <div class="container">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
-        </div>
+<body class="bg-gray-800 text-white">
+    <header class="w-full flex justify-center pt-8 md:pt-12">
+        <a href="<?= $this->Url->build('/') ?>" class="text-2xl font-semibold tracking-wide md:text-3xl">
+            volafile
+        </a>
+    </header>
+
+    <main class="mt-12">
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch('content') ?>
     </main>
+
     <footer>
     </footer>
 </body>
