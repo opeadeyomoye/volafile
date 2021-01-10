@@ -24,8 +24,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        volafile - Simple, private file-sharing.
-        <?php // $this->fetch('title') ?>
+        volafile - Simple, ephemeral file-sharing.
+        <?php // $this->fetch('title')
+        ?>
     </title>
 
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -51,6 +52,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <footer>
     </footer>
+
+    <?= $this->fetch('bodyScript') ?>
 </body>
 
 </html>
