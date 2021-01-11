@@ -1,8 +1,5 @@
 FROM php:7.4.11-apache
 
-ARG DB_CERT
-ARG DB_CERT_PATH
-
 # install all the system dependencies and enable PHP modules
 RUN apt-get update && apt-get install -y \
       libicu-dev \
@@ -50,7 +47,3 @@ RUN composer install --no-interaction
 
 # change ownership of our applications
 RUN chown -R www-data:www-data $APP_HOME
-
-# store ca cert for db connections
-RUN echo $DB_CERT > $DB_CERT_PATH
-RUN chmod a+r $DB_CERT_PATH
