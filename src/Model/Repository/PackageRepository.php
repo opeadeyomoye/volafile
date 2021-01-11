@@ -67,6 +67,10 @@ class PackageRepository implements PackageRepositoryInterface
             ->contain(['PackageItems'])
             ->first();
 
+        if (!$entity) {
+            return null;
+        }
+
         $package = new Package(
             $entity->id,
             $entity->get('access_code'),

@@ -9,6 +9,9 @@ const fileSize = document.getElementById('fileSize');
 const initialUploadArea = document.getElementById('initialUploadArea');
 const previewArea = document.getElementById('previewArea');
 
+const keyCheckbox = document.getElementById('useKey');
+const keySection = document.getElementById('keySection');
+
 const selectFile = (event) => {
   if (event) {
     event.preventDefault();
@@ -53,9 +56,12 @@ const setFileSize = (size) => {
   fileSize.innerText = filesize(size, { round: 1 });
 }
 
-const disableSubmit = function(event, button) {
-  console.log('event...', event);
-  console.log('event...', button);
-  //button.disabled = true;
-  //button.classList.add('cursor-not-allowed');
+const toggleKeySection = () => {
+  if (keyCheckbox.checked) {
+    keySection.classList.remove('hidden');
+
+    return;
+  }
+
+  keySection.classList.add('hidden');
 }

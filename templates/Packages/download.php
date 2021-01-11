@@ -24,7 +24,7 @@ $count = count($files ?? []);
         ]) ?>
     </div>
 
-<?php elseif ($requiresKey) : ?>
+<?php elseif ($requiresKey && empty($files)) : ?>
     <div class="py-4 md:py-8">
         <div class="flex justify-center">
             <svg class="w-1/6 h-auto text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,7 +41,7 @@ $count = count($files ?? []);
             <label for="password" class="sr-only">Enter password</label>
             <input id="password" name="key" type="password" class="w-full px-5 py-3 bg-gray-700 text-center md:text-left focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs border-gray-300 rounded-md" placeholder="Password" />
             <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-                <button onclick="copyLink(this);" type="button" class="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" class="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Unlock
                 </button>
             </div>

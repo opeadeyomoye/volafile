@@ -34,8 +34,7 @@ class UploadPackageForm extends Form
     {
         return $schema
             ->addField('file', 'uploadedFile')
-            ->addField('download_limit', 'integer')
-            ->addField('download_limit_unit', 'string');
+            ->addField('key', 'string');
     }
 
     /**
@@ -44,6 +43,8 @@ class UploadPackageForm extends Form
     public function validationDefault(Validator $validator): Validator
     {
         return $validator
+            ->allowEmptyString('key')
+
             ->requirePresence('file')
             ->uploadedFile('file', [
                 'types' => $this->supportedMimeTypes(),

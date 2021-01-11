@@ -43,6 +43,10 @@ class PackagesController extends AppController
             }
 
             $package = $packages->makePackagefromUploadedFiles([$form->getData('file')]);
+
+            if (!empty($key = $form->getData('key'))) {
+                $package->seal($key);
+            }
             $packages->load($package);
 
             $this->request->getSession()->write(self::LAST_PACKAGE_SESSION_KEY, $package->id());
@@ -81,7 +85,7 @@ class PackagesController extends AppController
         Packages $packages
     ): ?Response {
         $package = $repository->get($id);
-        $accessCode = urldecode($this->request->getQuery('ac'));
+        $accessCode = urldecode($this->request->getQuery('ac') ?? '');
 
         if (!$package || ($accessCode !== $package->accessCode())) {
             throw new NotFoundException('Sorry, we could not find that package.');
