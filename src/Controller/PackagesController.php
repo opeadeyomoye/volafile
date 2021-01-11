@@ -10,7 +10,6 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\Routing\Router;
 use Throwable;
 
 /**
@@ -78,13 +77,21 @@ class PackagesController extends AppController
 
     public function download(
         string $id,
-        PackageRepositoryInterface $repository
+        PackageRepositoryInterface $repository,
+        Packages $packages
     ): ?Response {
         $package = $repository->get($id);
         $accessCode = urldecode($this->request->getQuery('ac'));
 
         if (!$package || ($accessCode !== $package->accessCode())) {
             throw new NotFoundException('Sorry, we could not find that package.');
+        }
+
+        if ($package->isExpired()) {
+            $packages->offload($package);
+            $this->set('expired', true);
+
+            return null;
         }
 
         $files = [];

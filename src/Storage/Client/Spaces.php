@@ -72,6 +72,11 @@ class Spaces implements ObjectStorageInterface
 
     public function delete(string $identifier): bool
     {
-        return false;
+        $this->s3Client->deleteObject([
+            'Bucket' => $this->spaceName,
+            'Key' => $identifier
+        ]);
+
+        return true;
     }
 }

@@ -7,12 +7,16 @@ use App\Domain\Core\File;
 use App\Domain\Core\Package;
 use App\Domain\Core\Repository\PackageRepositoryInterface;
 use App\Storage\ObjectStorageInterface;
+use Cake\Chronos\Chronos;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 use Throwable;
 
 class Packages
 {
+    use LocatorAwareTrait;
+
     protected ObjectStorageInterface $storage;
     protected PackageRepositoryInterface $packageRepository;
 
@@ -61,6 +65,25 @@ class Packages
     public function load(Package $package): Package
     {
         return $this->packageRepository->save($package);
+    }
+
+    public function offload(Package $package): bool
+    {
+        $table = $this->getTableLocator()->get('Packages');
+
+        $entity = $table->get($package->id(), ['contain' => 'PackageItems']);
+        if ($entity->get('offloaded')) {
+            return true;
+        }
+
+        foreach ($entity->get('package_items') as $item) {
+            $this->storage->delete($item->path);
+        }
+
+        $entity->set('offloaded', new Chronos());
+        $table->save($entity);
+
+        return true;
     }
 
     public function retrieveFile(string $path)

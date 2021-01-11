@@ -80,15 +80,6 @@ class PackagesTable extends Table
             ->maxLength('password', 60)
             ->allowEmptyString('password');
 
-        $validator
-            ->notEmptyString('expires_after');
-
-        $validator
-            ->scalar('expiration_unit')
-            ->maxLength('expiration_unit', 10)
-            ->requirePresence('expiration_unit', 'create')
-            ->notEmptyString('expiration_unit');
-
         return $validator;
     }
 }

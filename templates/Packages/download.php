@@ -4,14 +4,27 @@
  * @var \App\View\AppView $this
  * @var \App\Domain\Core\Package $package
  * @var \App\Domain\Core\File[] $files
+ * @var bool $expired
  * @var bool $requiresKey
  */
 
 $this->extend('/shell');
-$count = count($files);
+$count = count($files ?? []);
 ?>
 
-<?php if ($requiresKey) : ?>
+<?php if (isset($expired) && $expired) : ?>
+
+    <p class="text-lg text-center">
+        Sorry, that link is expired.
+    </p>
+
+    <div class="mt-6 flex h-full justify-center">
+        <?= $this->Html->link(__('Share files privately'), '/', [
+            'class' => 'underline text-gray-500 hover:text-gray-400'
+        ]) ?>
+    </div>
+
+<?php elseif ($requiresKey) : ?>
     <div class="py-4 md:py-8">
         <div class="flex justify-center">
             <svg class="w-1/6 h-auto text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

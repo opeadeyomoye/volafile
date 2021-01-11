@@ -18,8 +18,7 @@ class Package
     protected ?string $id = null;
     protected ?string $key = null;
     protected ?string $accessCode = null;
-    protected object $creationTime;
-    protected DateTime $expirationTime;
+    protected bool $expired;
 
     /**
      * @var File[]
@@ -30,8 +29,7 @@ class Package
         ?string $id = null,
         ?string $accessCode = null,
         ?string $key = null,
-        ?object $expirationTime = null,
-        ?object $creationTime = null
+        bool $expired = false
     ) {
         $this->id = empty($id)
             ? bin2hex(random_bytes(8))
@@ -41,17 +39,11 @@ class Package
             ? base64_encode(random_bytes(16))
             : $accessCode;
 
-        $this->expirationTime = empty($expirationTime)
-            ? new DateTime()
-            : $expirationTime;
-
-        $this->creationTime = empty($creationTime)
-            ? new DateTime()
-            : $creationTime;
-
         if ($key) {
             $this->key = $key;
         }
+
+        $this->expired = $expired;
     }
 
     public function seal(string $key): self
@@ -84,6 +76,14 @@ class Package
     public function isSealed(): bool
     {
         return (bool)$this->key;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        return $this->expired;
     }
 
     /**

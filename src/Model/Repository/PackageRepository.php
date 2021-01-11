@@ -38,8 +38,7 @@ class PackageRepository implements PackageRepositoryInterface
             'id' => $package->id(),
             'access_code' => $package->accessCode(),
             'password' => $package->key(),
-            'expires_after' => 1,
-            'expiration_unit' => 'days',
+            'expires' => (new Chronos())->addDay()->toDateTimeString(),
             'created' => (new Chronos())->toDateTimeString(),
         ]);
 
@@ -72,6 +71,7 @@ class PackageRepository implements PackageRepositoryInterface
             $entity->id,
             $entity->get('access_code'),
             $entity->get('password'),
+            $entity->get('expires') ? $entity->get('expires')->isPast() : true
         );
 
         /** @var Entity[] */
