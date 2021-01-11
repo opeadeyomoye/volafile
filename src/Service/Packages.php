@@ -38,7 +38,7 @@ class Packages
 
         foreach ($files as $file) {
             try {
-                $object =  $this->storage->store(
+                $object = $this->storage->store(
                     $file->getStream()->getMetadata('uri'),
                     $file->getClientFilename()
                 );

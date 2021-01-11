@@ -18,7 +18,7 @@ class StorageObject
         $this->name = $this->cleanName($name);
 
         if (!$path) {
-            $path = $this->generatePath($this->name);
+            $path = $this->generatePath();
         }
         $this->path = $path;
     }
@@ -44,8 +44,8 @@ class StorageObject
         return Text::slug($name, ['preserve' => '.']);
     }
 
-    protected function generatePath(string $filename): string
+    protected function generatePath(): string
     {
-        return date('Y/m/d/') . $filename;
+        return date('Y/m/d/') . uniqid('', true);
     }
 }

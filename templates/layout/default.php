@@ -40,7 +40,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
 <body class="bg-gray-800 text-white">
     <header class="w-full flex justify-center pt-8 md:pt-12">
-        <a href="<?= $this->Url->build('/') ?>" class="text-2xl font-semibold tracking-wide md:text-3xl">
+        <a href="<?= $this->Url->build('/') ?>" class="text-2xl font-semibold tracking-wide text-gray-300 md:text-3xl">
             volafile
         </a>
     </header>
