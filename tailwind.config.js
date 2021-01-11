@@ -12,6 +12,7 @@ module.exports = {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       minHeight: (theme) => theme('spacing'),
+      maxWidth: (theme) => theme('width'),
     },
   },
   variants: {

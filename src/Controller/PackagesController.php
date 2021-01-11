@@ -7,6 +7,7 @@ use App\Domain\Core\Repository\PackageRepositoryInterface;
 use App\Form\UploadPackageForm;
 use App\Service\Packages;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Routing\Router;
@@ -67,14 +68,10 @@ class PackagesController extends AppController
 
         $package = $repository->get($uploadedPackageId);
         if (!$package) {
-            // there's a problem
+            throw new InternalErrorException();
         }
 
-        $this->set('packageLink', Router::url([
-            'action' => 'download',
-            $package->id(),
-            '?' => ['ac' => urlencode($package->accessCode())]
-        ]));
+        $this->set(compact('package'));
 
         return null;
     }
@@ -148,7 +145,7 @@ class PackagesController extends AppController
         return $this->response
             ->withHeader('Content-Description', 'File Transfer')
             ->withType(mime_content_type($localPath))
-            ->withFile(stream_get_meta_data($resource)['uri'], [
+            ->withFile($localPath, [
                 'name' => $file->get('name'),
                 'download' => true,
             ]);

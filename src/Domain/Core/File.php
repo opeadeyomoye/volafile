@@ -8,12 +8,14 @@ class File
     protected string $packageId;
     protected string $name;
     protected string $path;
+    protected ?int $id;
 
-    public function __construct(string $packageId, string $name, string $path)
+    public function __construct(string $packageId, string $name, string $path, ?int $id = null)
     {
         $this->packageId = $packageId;
         $this->name = $name;
         $this->path = $path;
+        $this->id = $id;
     }
 
     /**
@@ -38,5 +40,13 @@ class File
     public function packageId(): string
     {
         return $this->packageId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function id(): ?int
+    {
+        return $this->id;
     }
 }

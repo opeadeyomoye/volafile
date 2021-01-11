@@ -80,7 +80,8 @@ class PackageRepository implements PackageRepositoryInterface
             $package->addItem(new File(
                 $package->id(),
                 $entityItem->get('name'),
-                $entityItem->get('path')
+                $entityItem->get('path'),
+                $entityItem->id
             ));
         }
 

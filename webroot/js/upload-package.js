@@ -52,3 +52,10 @@ const setFileName = (name) => {
 const setFileSize = (size) => {
   fileSize.innerText = filesize(size, { round: 1 });
 }
+
+const disableSubmit = function(event, button) {
+  console.log('event...', event);
+  console.log('event...', button);
+  //button.disabled = true;
+  //button.classList.add('cursor-not-allowed');
+}
