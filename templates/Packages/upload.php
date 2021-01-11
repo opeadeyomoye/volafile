@@ -88,5 +88,15 @@ $this->Html->script('upload-package', ['block' => 'bodyScript', 'once' => true])
 
     <div class="mt-12 md:mt-0 md:ml-8">
         <h2 class="text-2xl font-bold">Simple, ephemeral file sharing.</h2>
+
+        <p class="mt-4 text-sm leading-relaxed">
+            volafile lets you share files privately. You can upload a file and get a unique download link
+            that's known only to you and other people you might share it with.
+        </p>
+
+        <p class="mt-4 text-sm leading-relaxed">
+            All uploads expire after 24 hours, and you can optionally add another layer of protection
+            by locking your uploads with a password.
+        </p>
     </div>
 </div>

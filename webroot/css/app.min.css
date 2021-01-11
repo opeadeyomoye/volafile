@@ -949,6 +949,10 @@ select {
   line-height: 1.375;
 }
 
+.leading-relaxed {
+  line-height: 1.625;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
