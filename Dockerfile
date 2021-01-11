@@ -53,3 +53,4 @@ RUN chown -R www-data:www-data $APP_HOME
 
 # store ca cert for db connections
 RUN echo $DB_CERT > $DB_CERT_PATH
+RUN chmod a+r $DB_CERT_PATH
