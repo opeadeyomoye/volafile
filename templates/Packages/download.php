@@ -62,7 +62,7 @@ $count = count($files ?? []);
                         <div class="text-sm text-center flex items-center">
                             <?= $this->Html->link(__('Download'), [
                                 'action' => 'downloadFile',
-                                $package->id(),
+                                $package->id,
                                 $file->id()
                             ], [
                                 'class' => 'text-indigo-200 hover:text-indigo-300 transition focus:underline'

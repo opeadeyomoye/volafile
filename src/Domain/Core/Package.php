@@ -3,47 +3,40 @@ declare(strict_types=1);
 
 namespace App\Domain\Core;
 
-use DateTime;
+use App\DomainObject;
 use InvalidArgumentException;
 
 /**
  * A package contains all the files that a sender's trying to get across
  * to receivers, along with instructions on how the receivers can access
  * said files, and how long the files should be available for.
+ *
+ * @property string|null $id
+ * @property string|null $key
+ * @property string|null $accessCode
+ * @property File[] $items
  */
-class Package
+class Package extends DomainObject
 {
     protected const KEY_HASH_ALGO = PASSWORD_DEFAULT;
 
     protected ?string $id = null;
     protected ?string $key = null;
     protected ?string $accessCode = null;
-    protected bool $expired;
+    protected bool $expired = false;
 
     /**
-     * @var File[]
+     * @var \App\Domain\Core\File[]
      */
     protected array $items = [];
 
-    public function __construct(
-        ?string $id = null,
-        ?string $accessCode = null,
-        ?string $key = null,
-        bool $expired = false
-    ) {
-        $this->id = empty($id)
-            ? bin2hex(random_bytes(8))
-            : $id;
-
-        $this->accessCode = empty($accessCode)
-            ? base64_encode(random_bytes(16))
-            : $accessCode;
-
-        if ($key) {
-            $this->key = $key;
-        }
-
-        $this->expired = $expired;
+    /**
+     * {@inheritDoc}
+     */
+    public function initialize(array $parameters = []): void
+    {
+        $this->id = $this->id ?? bin2hex(random_bytes(8));
+        $this->accessCode = $this->accessCode ?? base64_encode(random_bytes(16));
     }
 
     public function seal(string $key): self
@@ -90,7 +83,7 @@ class Package
      * Take a peek at the items in this package.
      *
      * @param string|null $key Required if the package is sealed.
-     * @return Files[]
+     * @return File[]
      *
      * @throws InvalidArgumentException For invalid keys.
      */
@@ -102,38 +95,6 @@ class Package
             }
         }
 
-        return $this->items;
-    }
-
-    /**
-     * @return string
-     */
-    public function id(): ?string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function accessCode(): ?string
-    {
-        return $this->accessCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function key(): ?string
-    {
-        return $this->key;
-    }
-
-    /**
-     * @return File[]
-     */
-    public function items(): array
-    {
         return $this->items;
     }
 }

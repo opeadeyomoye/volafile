@@ -49,7 +49,7 @@ class PackagesController extends AppController
             }
             $packages->load($package);
 
-            $this->request->getSession()->write(self::LAST_PACKAGE_SESSION_KEY, $package->id());
+            $this->request->getSession()->write(self::LAST_PACKAGE_SESSION_KEY, $package->id);
 
             return $this->redirect(['action' => 'uploadResult']);
             // store package
@@ -87,7 +87,7 @@ class PackagesController extends AppController
         $package = $repository->get($id);
         $accessCode = urldecode($this->request->getQuery('ac') ?? '');
 
-        if (!$package || ($accessCode !== $package->accessCode())) {
+        if (!$package || ($accessCode !== $package->accessCode)) {
             throw new NotFoundException('Sorry, we could not find that package.');
         }
 
@@ -102,7 +102,7 @@ class PackagesController extends AppController
         $requiresKey = $package->isSealed();
 
         if (!$requiresKey) {
-            $this->PackageAuth->allowDownloadsFor($package->id());
+            $this->PackageAuth->allowDownloadsFor($package->id);
             $files = $package->peek();
         }
 
@@ -113,7 +113,7 @@ class PackagesController extends AppController
 
             try {
                 $files = $package->peek($key);
-                $this->PackageAuth->allowDownloadsFor($package->id());
+                $this->PackageAuth->allowDownloadsFor($package->id);
             } catch (Throwable $e) {
                 $this->Flash->error(__('That password is incorrect.'));
             }

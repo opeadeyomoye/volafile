@@ -7,8 +7,8 @@
 
 $packageLink = $this->Url->build([
     'action' => 'download',
-    $package->id(),
-    '?' => ['ac' => urlencode($package->accessCode())]
+    $package->id,
+    '?' => ['ac' => urlencode($package->accessCode)]
 ], ['fullBase' => true]);
 
 $this->extend('/shell');

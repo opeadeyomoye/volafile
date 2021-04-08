@@ -50,7 +50,7 @@ class Packages
                 throw new RuntimeException('Error adding package file to storage.');
             }
 
-            $package->addItem(new File($package->id(), $object->name(), $object->path()));
+            $package->addItem(new File($package->id, $object->name(), $object->path()));
         }
 
         return $package;
@@ -71,7 +71,7 @@ class Packages
     {
         $table = $this->getTableLocator()->get('Packages');
 
-        $entity = $table->get($package->id(), ['contain' => 'PackageItems']);
+        $entity = $table->get($package->id, ['contain' => 'PackageItems']);
         if ($entity->get('offloaded')) {
             return true;
         }
