@@ -7,7 +7,7 @@
 use App\Domain\Core\Repository\PackageRepositoryInterface;
 use App\Model\Repository\PackageRepository;
 use App\Service\Packages;
-use App\Storage\Client\Spaces as SpacesStorage;
+use App\Storage\Client\CloudStorage;
 use App\Storage\ObjectStorageInterface;
 use Cake\ORM\TableRegistry;
 
@@ -20,4 +20,4 @@ $container->share(Packages::class)
 $container->share(PackageRepositoryInterface::class, PackageRepository::class)
     ->addArgument($tableLocator->get('Packages'));
 
-$container->share(ObjectStorageInterface::class, SpacesStorage::class);
+$container->share(ObjectStorageInterface::class, CloudStorage::class);
