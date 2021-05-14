@@ -46,9 +46,9 @@ class PackageRepository implements PackageRepositoryInterface
 
         foreach ($items as $item) {
             $packageItemsEntities[] = new Entity([
-                'package_id' => $item->packageId(),
-                'name' => $item->name(),
-                'path' => $item->path(),
+                'package_id' => $item->packageId,
+                'name' => $item->name,
+                'path' => $item->path,
                 'created' => new Chronos(),
             ]);
         }
@@ -70,22 +70,22 @@ class PackageRepository implements PackageRepositoryInterface
             return null;
         }
 
-        $package = new Package(
-            $entity->id,
-            $entity->get('access_code'),
-            $entity->get('password'),
-            $entity->get('expires') ? $entity->get('expires')->isPast() : true
-        );
+        $package = new Package([
+            'id' => $entity->id,
+            'accessCode' => $entity->get('access_code'),
+            'key' => $entity->get('password'),
+            'expires' => $entity->get('expires') ? $entity->get('expires')->isPast() : true
+        ]);
 
         /** @var Entity[] */
         $entityItems = $entity->get('package_items');
         foreach ($entityItems as $entityItem) {
-            $package->addItem(new File(
-                $package->id,
-                $entityItem->get('name'),
-                $entityItem->get('path'),
-                $entityItem->id
-            ));
+            $package->addItem(new File([
+                'packageId' => $package->id,
+                'name' => $entityItem->get('name'),
+                'path' => $entityItem->get('path'),
+                'id' => $entityItem->id
+            ]));
         }
 
         return $package;

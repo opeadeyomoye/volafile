@@ -33,7 +33,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
-    <?= $this->Html->css('app.min') ?>
+    <?= Configure::read('debug') ?  $this->Html->css('app') : $this->Html->css('app.min') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

@@ -50,7 +50,11 @@ class Packages
                 throw new RuntimeException('Error adding package file to storage.');
             }
 
-            $package->addItem(new File($package->id, $object->name(), $object->path()));
+            $package->addItem(new File([
+                'packageId' => $package->id,
+                'name' => $object->name(),
+                'path' => $object->path()
+            ]));
         }
 
         return $package;

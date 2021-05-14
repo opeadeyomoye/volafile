@@ -57,13 +57,13 @@ $count = count($files ?? []);
                 <?php foreach ($files as $file) : ?>
                     <div class="mt-4 grid grid-cols-4 gap-x-4 md:gap-x-6">
                         <div class="col-span-3 p-4 bg-gray-800 rounded text-gray-200 truncate">
-                            <?= $file->name() ?>
+                            <?= $file->name ?>
                         </div>
                         <div class="text-sm text-center flex items-center">
                             <?= $this->Html->link(__('Download'), [
                                 'action' => 'downloadFile',
                                 $package->id,
-                                $file->id()
+                                $file->id
                             ], [
                                 'class' => 'text-indigo-200 hover:text-indigo-300 transition focus:underline'
                             ]) ?>
