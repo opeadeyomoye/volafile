@@ -24,6 +24,8 @@ class StorageObject
     }
 
     /**
+     * Identifier for this object in storage.
+     *
      * @return string
      */
     public function path(): string
@@ -32,6 +34,8 @@ class StorageObject
     }
 
     /**
+     * The filename for this object. Clean.
+     *
      * @return string
      */
     public function name(): string
@@ -39,11 +43,19 @@ class StorageObject
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     protected function cleanName(string $name): string
     {
         return Text::slug($name, ['preserve' => '.']);
     }
 
+    /**
+     * Returns a unique name/path that'll be used to identify this object in storage.
+     *
+     * @return string
+     */
     protected function generatePath(): string
     {
         return date('Y/m/d/') . uniqid('', true);

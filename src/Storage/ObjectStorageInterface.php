@@ -12,7 +12,7 @@ interface ObjectStorageInterface
      * @param string $name What the file should be called.
      * @param array $options Storage-client-specific configuration.
      *
-     * @return Object
+     * @return StorageObject
      */
     public function store(string $file, string $name, array $options = []): StorageObject;
 

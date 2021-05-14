@@ -74,7 +74,7 @@ class PackageRepository implements PackageRepositoryInterface
             'id' => $entity->id,
             'accessCode' => $entity->get('access_code'),
             'key' => $entity->get('password'),
-            'expires' => $entity->get('expires') ? $entity->get('expires')->isPast() : true
+            'expired' => $entity->get('expires') ? $entity->get('expires')->isPast() : true
         ]);
 
         /** @var Entity[] */
